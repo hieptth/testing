@@ -21,4 +21,4 @@ def readDataFromExcel(sheetName):
     return testcases
 
 
-print(readDataFromExcel('Login'))
+print(readDataFromExcel('Signup'))
