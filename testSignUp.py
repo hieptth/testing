@@ -51,7 +51,6 @@ class SignupTest(unittest.TestCase):
     def test_sign_up_flows(self, failed_at, phone, email, password, account):
     
         if failed_at == "none" and phone != "":
-            print("phone sign up:", phone)
             input_phone_email = self.get_input("phone")
             input_password = self.get_input("password")
             input_account = self.get_input("account")
@@ -62,10 +61,8 @@ class SignupTest(unittest.TestCase):
             input_account.send_keys(account)
             error = self.get_error('phone')
             self.assertEqual(error.text, "")
-            print("done")
 
         elif failed_at == "none" and email != "":
-            print("email sign up:", email)
             self.signup_email()
             print('redirected')
             input_phone_email = self.get_input("email")
@@ -78,10 +75,8 @@ class SignupTest(unittest.TestCase):
             input_account.send_keys(account)
             error = self.get_error('email')
             self.assertEqual(error.text, "")
-            print("done")
 
         elif failed_at == "phone":
-            print("phone fail:", phone)
             input_phone_email = self.get_input("phone")
             input_password = self.get_input("password")
 
@@ -94,10 +89,7 @@ class SignupTest(unittest.TestCase):
             self.assertNotEqual(error.text, "")
             
         elif failed_at == "email":
-            print("email fail:", email)
             self.signup_email()
-            print('redirected')
-
             # enter email
             input_phone_email = self.get_input("email")
             input_password = self.get_input("password")
@@ -107,11 +99,9 @@ class SignupTest(unittest.TestCase):
             self.driver.implicitly_wait(10)
             input_password.click()
             error = self.get_error('email')
-            print(error.text, " done")
             self.assertNotEqual(error.text, "")
         
         elif failed_at == "password":
-            print("password fail:", password)
             input_password = self.get_input("password")
             input_account = self.get_input("account")
 
@@ -120,11 +110,9 @@ class SignupTest(unittest.TestCase):
             self.driver.implicitly_wait(10)
             input_account.click()
             error = self.get_error('password')
-            print(error.text, " done")
             self.assertNotEqual(error.text, "")
 
         elif failed_at == "account":
-            print("account fail:", account)
             input_account = self.get_input("account")
             input_password = self.get_input("password")
 
@@ -134,7 +122,6 @@ class SignupTest(unittest.TestCase):
             self.driver.implicitly_wait(10)
             input_password.click()
             error = self.get_error('account')
-            print(error.text, " done")
             self.assertNotEqual(error.text, "")
 
 

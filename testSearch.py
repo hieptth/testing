@@ -34,14 +34,12 @@ class SearchTest(unittest.TestCase):
         input_search.send_keys(Keys.ENTER)
 
         self.driver.implicitly_wait(10)
-        print("entered query:", query)
         if have_result == "yes":
             result = self.get_result()
             print(result.text, " done")
             self.assertNotEqual(result.text, "Search No Result")
         elif have_result == "no":
             result = self.get_result(False)
-            print(result.text, " done")
             self.assertEqual(result.text, "Search No Result")
         else:
             current_url = self.driver.current_url
