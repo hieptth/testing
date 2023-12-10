@@ -1,4 +1,3 @@
-import pytest 
 import time
 import unittest
 from selenium import webdriver
@@ -7,24 +6,21 @@ from selenium.webdriver.common.action_chains import ActionChains
 from selenium.webdriver.support import expected_conditions
 from selenium.webdriver.support.wait import WebDriverWait
 from selenium.webdriver.common.keys import Keys
-from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
-from selenium.webdriver.chrome.options import Options
-
 from parameterized import parameterized
 import readData
 
 class Login(unittest.TestCase):
     def setUp(self):
         self.driver = webdriver.Chrome()
-        self.driver.implicitly_wait(30)
+        self.driver.implicitly_wait(15)
         self.driver.maximize_window()
         self.driver.get("http://member.lazada.vn/user/login")
 
     def tearDown(self):
         self.driver.quit()
     
-    @parameterized.expand(readData.readDatafromExcel("TrackingOrder"))
-    def testcase(self,orderId):
+    @parameterized.expand(readData.readDataFromExcel("TrackingOrder"))
+    def testcase(self,orderId,expected):
         #Change language of lazada
         languageFields = self.driver.find_elements(By.XPATH, "//span[text()='change language']")
         if len(languageFields) != 0:
@@ -54,7 +50,11 @@ class Login(unittest.TestCase):
         trackingOrderField.click()
         inputField = self.driver.find_element(By.ID,"topActionTrackOrderNumber")
         inputField.send_keys(orderId)
-        inputField.send_keys(Keys.ENTER)    
+        inputField.send_keys(Keys.ENTER)
+        if expected != "":
+            time.sleep(10)
+            errMsg = self.driver.find_element(By.ID,"topActionTrackErrorMsg")
+            assert expected in errMsg.text
 
 if __name__=='__main__':
     unittest.main()
